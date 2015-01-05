@@ -8,10 +8,16 @@ use std::str::from_utf8;
 
 fn main() {
 
+  let data = load_data();
+
+
+}
+
+fn load_data() -> node::Routes {
   match File::open(&Path::new("graph.json")).read_to_end() {
     Ok(content_vec) => {
       match from_utf8(content_vec.as_slice()) {
-        Ok(data) => compute_routes(data),
+        Ok(data) => return node::Routes::decode(data),
         Err(err) => panic!("Could not convert byte data into utf8 string: {}", err),
       }
     }
@@ -22,7 +28,6 @@ fn main() {
 
 
 fn compute_routes(data: &str) {
-  let data = node::Routes::deserialize(data);
 
-  println!("{}", data);
+
 }
