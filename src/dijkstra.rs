@@ -35,7 +35,7 @@ impl QueueNode {
 }
 
 // Dijkstra's algorithm
-pub fn calculate_path(from: uint, to: uint, adj_list: &Vec<Vec<Edge>>) {
+pub fn calculate_path(from: uint, to: uint, adj_list: &Vec<Vec<Edge>>) -> Option<Vec<uint>> {
 
   // lowest distance from start node to any given node
   let mut distances:Vec<uint> = range(0, adj_list.len()).map(|_| uint::MAX).collect();
@@ -79,7 +79,7 @@ pub fn calculate_path(from: uint, to: uint, adj_list: &Vec<Vec<Edge>>) {
 
         visited_nodes.insert(current_node.node);
       },
-      None => break,
+      None => return None
     }
 
 
@@ -105,4 +105,5 @@ pub fn calculate_path(from: uint, to: uint, adj_list: &Vec<Vec<Edge>>) {
 
   println!("Path: {}", path);
 
+  Some(path)
 }
