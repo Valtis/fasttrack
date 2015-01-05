@@ -39,6 +39,7 @@ pub fn calculate_path(from: uint, to: uint, adj_list: &Vec<Vec<Edge>>) {
 
   // lowest distance from start node to any given node
   let mut distances:Vec<uint> = range(0, adj_list.len()).map(|_| uint::MAX).collect();
+  let mut came_from:Vec<uint> = range(0, adj_list.len()).map(|_| uint::MAX).collect();
 
   distances[from] = 0;
 
@@ -69,6 +70,7 @@ pub fn calculate_path(from: uint, to: uint, adj_list: &Vec<Vec<Edge>>) {
           let distance = distances[current_node.node] + edge.weight;
 
           if distance < distances[edge.to] {
+            came_from[edge.to] = current_node.node;
             distances[edge.to] = distance;
             queue.push(QueueNode::new(edge.to, distance));
           }
@@ -83,6 +85,24 @@ pub fn calculate_path(from: uint, to: uint, adj_list: &Vec<Vec<Edge>>) {
 
 
   }
+  let mut path = vec![];
+
+  let mut current_node:uint = to;
+
+  loop {
+    path.push(current_node);
+
+    if current_node == from {
+      break;
+    }
+
+    current_node = came_from[current_node];
+  }
+
+  path.reverse();
 
   println!("Path cost: {}", distances[to]);
+
+  println!("Path: {}", path);
+
 }

@@ -16,6 +16,7 @@ fn main() {
   let adj_list = adjancency_list::construct(routes);
 
   dijkstra::calculate_path(123, 345 , &adj_list);
+  dijkstra::calculate_path(201, 8775 , &adj_list);
 }
 
 fn load_data() -> Vec<RouteNode> {
