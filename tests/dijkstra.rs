@@ -1,8 +1,7 @@
 extern crate fasttrack;
-use fasttrack::dijkstra::QueueNode;
 use fasttrack::dijkstra::calculate_path;
 
-use fasttrack::adjancency_list::Edge;
+use fasttrack::edge::Edge;
 
 use std::collections::BinaryHeap;
 
@@ -11,20 +10,20 @@ fn queue_node_ordering_works_correctly() {
 
   let mut priority_queue = create_queue();
 
-  assert_eq!(QueueNode::new(4, 10), priority_queue.pop().unwrap());
-  assert_eq!(QueueNode::new(9, 12), priority_queue.pop().unwrap());
-  assert_eq!(QueueNode::new(6, 15), priority_queue.pop().unwrap());
-  assert_eq!(QueueNode::new(5, 20), priority_queue.pop().unwrap());
-  assert_eq!(QueueNode::new(7, 32), priority_queue.pop().unwrap());
+  assert_eq!(Edge::new(4, 10), priority_queue.pop().unwrap());
+  assert_eq!(Edge::new(9, 12), priority_queue.pop().unwrap());
+  assert_eq!(Edge::new(6, 15), priority_queue.pop().unwrap());
+  assert_eq!(Edge::new(5, 20), priority_queue.pop().unwrap());
+  assert_eq!(Edge::new(7, 32), priority_queue.pop().unwrap());
 }
 
-fn create_queue() -> BinaryHeap<QueueNode> {
-  let mut priority_queue:BinaryHeap<QueueNode> = BinaryHeap::new();
-  priority_queue.push(QueueNode::new(5, 20));
-  priority_queue.push(QueueNode::new(6, 15));
-  priority_queue.push(QueueNode::new(7, 32));
-  priority_queue.push(QueueNode::new(9, 12));
-  priority_queue.push(QueueNode::new(4, 10));
+fn create_queue() -> BinaryHeap<Edge> {
+  let mut priority_queue:BinaryHeap<Edge> = BinaryHeap::new();
+  priority_queue.push(Edge::new(5, 20));
+  priority_queue.push(Edge::new(6, 15));
+  priority_queue.push(Edge::new(7, 32));
+  priority_queue.push(Edge::new(9, 12));
+  priority_queue.push(Edge::new(4, 10));
 
   priority_queue
 }

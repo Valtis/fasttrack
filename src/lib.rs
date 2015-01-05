@@ -9,3 +9,4 @@ extern crate serialize;
 pub mod route_node;
 pub mod adjancency_list;
 pub mod dijkstra;
+pub mod edge;

@@ -1,7 +1,7 @@
 extern crate fasttrack;
 
 use fasttrack::adjancency_list;
-use fasttrack::adjancency_list::Edge;
+use fasttrack::edge::Edge;
 use fasttrack::route_node::RouteNode;
 
 
