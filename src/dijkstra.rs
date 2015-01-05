@@ -1,16 +1,15 @@
-use std::collections::HashMap;
 use std::collections::HashSet;
 use std::collections::BinaryHeap;
 use std::cmp::Ordering;
-use std::i32;
+use std::uint;
 
 
 use adjancency_list::Edge;
 
-#[derive(PartialEq, Eq, Show)]
+#[derive(PartialEq, Eq, Show, Copy)]
 pub struct QueueNode {
-  node: i32,
-  distance: i32,
+  node: uint,
+  distance: uint,
 }
 
 // binary heap is max-heap, so we need to implement & reverse (partial)ord to
@@ -30,25 +29,23 @@ impl Ord for QueueNode {
 }
 
 impl QueueNode {
-  pub fn new(n: i32, d: i32) -> QueueNode {
+  pub fn new(n: uint, d: uint) -> QueueNode {
     QueueNode{node: n, distance: d}
   }
 }
 
 // Dijkstra's algorithm
-pub fn calculate_path(from: i32, to: i32, adj_list: HashMap<i32, Vec<Edge>>) {
-  // lowest distance from start node to given node; node - distance pairs
-  let mut distances:HashMap<i32, i32> =  HashMap::new();
+pub fn calculate_path(from: uint, to: uint, adj_list: &Vec<Vec<Edge>>) {
 
-  for (key, _) in adj_list.iter() {
-    distances.insert(*key, i32::MAX);
-  }
+  // lowest distance from start node to any given node
+  let mut distances:Vec<uint> = range(0, adj_list.len()).map(|_| uint::MAX).collect();
 
-  let mut visited_nodes: HashSet<i32> = HashSet::new();
+  distances[from] = 0;
+
+  let mut visited_nodes: HashSet<uint> = HashSet::new();
   let mut queue:BinaryHeap<QueueNode> = BinaryHeap::new();
 
   queue.push(QueueNode::new(from, 0));
-
 
   loop {
     match queue.pop() {
@@ -63,24 +60,19 @@ pub fn calculate_path(from: i32, to: i32, adj_list: HashMap<i32, Vec<Edge>>) {
           continue;
         }
 
-        match adj_list.get(&current_node.node) {
-          Some(neighbours) => {
-            for edge in neighbours.iter() {
-              // node has been visited, skip
-              if visited_nodes.contains(&edge.to) {
-                continue;
-              }
-              let distance = *distances.get(&current_node.node).unwrap() + edge.weight;
+        for edge in adj_list[current_node.node].iter() {
+          // node has been visited, skip
+          if visited_nodes.contains(&edge.to) {
+            continue;
+          }
 
-              if distance < *distances.get(&edge.to).unwrap() {
-                distances.insert(edge.to, distance);
-                queue.push(QueueNode::new(edge.to, distance));
-              }
-            }
-          },
-          None => { /* do nothing*/}
+          let distance = distances[current_node.node] + edge.weight;
+
+          if distance < distances[edge.to] {
+            distances[edge.to] = distance;
+            queue.push(QueueNode::new(edge.to, distance));
+          }
         }
-
 
 
         visited_nodes.insert(current_node.node);

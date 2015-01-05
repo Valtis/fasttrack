@@ -19,14 +19,14 @@ fn adjancency_list_is_built_correctly() {
 
   assert_eq!(3, adj_list.len());
 
-  assert_eq!(2, adj_list.get(&0).unwrap().len());
-  assert_eq!(vec![Edge::new(0, 15), Edge::new(1, 20)], *adj_list.get(&0).unwrap());
+  assert_eq!(2, adj_list[0].len());
+  assert_eq!(vec![Edge::new(0, 15), Edge::new(1, 20)], adj_list[0]);
 
-  assert_eq!(2, adj_list.get(&1).unwrap().len());
-  assert_eq!(vec![Edge::new(0, 12), Edge::new(2, 25)], *adj_list.get(&1).unwrap());
+  assert_eq!(2, adj_list[1].len());
+  assert_eq!(vec![Edge::new(0, 12), Edge::new(2, 25)], adj_list[1]);
 
-  assert_eq!(1, adj_list.get(&2).unwrap().len());
-  assert_eq!(vec![Edge::new(1, 13)], *adj_list.get(&2).unwrap());
+  assert_eq!(1, adj_list[2].len());
+  assert_eq!(vec![Edge::new(1, 13)], adj_list[2]);
 
 
 }
