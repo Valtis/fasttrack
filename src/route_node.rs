@@ -12,14 +12,3 @@ impl RouteNode {
     RouteNode{ from: f, to: t, weight: w }
   }
 }
-
-#[derive(Show, Encodable, Decodable)]
-pub struct Routes {
-  pub nodes: Vec<RouteNode>,
-}
-
-impl Routes {
-  pub fn decode(data: &str) -> Routes {
-    Routes{nodes: json::decode(data).unwrap() }
-  }
-}
