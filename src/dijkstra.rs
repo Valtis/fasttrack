@@ -42,7 +42,6 @@ impl<'a> Dijkstra<'a> {
   }
 
   fn calculate_path(&mut self) -> Option<Vec<uint>> {
-    // lowest distance from start node to any given node
 
     loop {
       match self.queue.pop() {
@@ -69,18 +68,16 @@ impl<'a> Dijkstra<'a> {
     }
 
     for edge in self.adj_list[current_node.node].iter() {
-      if !self.handle_edge(current_node, edge) {
-        continue;
-      }
+      self.handle_edge(current_node, edge)
     }
 
     self.visited_nodes.insert(current_node.node);
   }
 
-  fn handle_edge(&mut self, current_node: &Edge, edge: &Edge) -> bool {
+  fn handle_edge(&mut self, current_node: &Edge, edge: &Edge) {
     // node has been visited, skip
     if self.visited_nodes.contains(&edge.node) {
-      return false;
+      return;
     }
 
     let distance = self.distances[current_node.node] + edge.distance;
@@ -90,8 +87,6 @@ impl<'a> Dijkstra<'a> {
       self.distances[edge.node] = distance;
       self.queue.push(Edge::new(edge.node, distance));
     }
-
-    return true;
   }
 
   fn construct_path(&self) -> Vec<uint> {
