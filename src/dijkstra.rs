@@ -52,32 +52,49 @@ impl<'a> Dijkstra<'a> {
             break;
           }
 
-          // node has already been visited, skip
-          if self.visited_nodes.contains(&current_node.node) {
-            continue;
-          }
+          self.handle_neighbours(&current_node);
 
-          for edge in self.adj_list[current_node.node].iter() {
-            // node has been visited, skip
-            if self.visited_nodes.contains(&edge.node) {
-              continue;
-            }
-
-            let distance = self.distances[current_node.node] + edge.distance;
-
-            if distance < self.distances[edge.node] {
-              self.came_from[edge.node] = current_node.node;
-              self.distances[edge.node] = distance;
-              self.queue.push(Edge::new(edge.node, distance));
-            }
-          }
-
-
-          self.visited_nodes.insert(current_node.node);
         },
-        None => return None
+        None => return None // empty queue => no path to target
       }
     }
+
+    Some(self.construct_path())
+  }
+
+  fn handle_neighbours(&mut self, current_node: &Edge) {
+    // node has already been visited, skip
+    if self.visited_nodes.contains(&current_node.node) {
+      return;
+    }
+
+    for edge in self.adj_list[current_node.node].iter() {
+      if !self.handle_edge(current_node, edge) {
+        continue;
+      }
+    }
+
+    self.visited_nodes.insert(current_node.node);
+  }
+
+  fn handle_edge(&mut self, current_node: &Edge, edge: &Edge) -> bool {
+    // node has been visited, skip
+    if self.visited_nodes.contains(&edge.node) {
+      return false;
+    }
+
+    let distance = self.distances[current_node.node] + edge.distance;
+
+    if distance < self.distances[edge.node] {
+      self.came_from[edge.node] = current_node.node;
+      self.distances[edge.node] = distance;
+      self.queue.push(Edge::new(edge.node, distance));
+    }
+
+    return true;
+  }
+
+  fn construct_path(&self) -> Vec<uint> {
     let mut path = vec![];
 
     let mut current_node:uint = self.to;
@@ -93,12 +110,7 @@ impl<'a> Dijkstra<'a> {
     }
 
     path.reverse();
-
-    println!("Path cost: {}", self.distances[self.to]);
-
-    println!("Path: {}", path);
-
-    Some(path)
+    path
   }
 }
 
