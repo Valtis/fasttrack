@@ -5,34 +5,41 @@ use std::io::File;
 use std::str::from_utf8;
 use serialize::json;
 
-
 use fasttrack::route_node::RouteNode;
 use fasttrack::adjancency_list;
 use fasttrack::dijkstra;
+use fasttrack::journey::Journey;
+
 
 fn main() {
 
-  let routes = load_data();
+  let routes = load_graph();
   let adj_list = adjancency_list::construct(routes);
 
-  println!("{}", dijkstra::calculate_path(201, 8775 , &adj_list));
+  let mut journeys = load_journeys();
 
-  println!("{}", dijkstra::calculate_path(23, 23877 , &adj_list));
+  // paths that have already a route will be recalculated
+  // but that's fine (in my opinion), as those are merely for example anyway
+  journeys = journeys.iter().map(
+    |journey| Journey::new(journey.from, journey.to,
+          dijkstra::calculate_path(journey.from, journey.to, &adj_list))
+    ).collect();
 
-  println!("{}", dijkstra::calculate_path(0, 49900 , &adj_list));
 
-  println!("{}", dijkstra::calculate_path(7896, 38949 , &adj_list));
-
+  println!("{}", json::as_pretty_json(&journeys));
 }
 
-fn load_data() -> Vec<RouteNode> {
-  match File::open(&Path::new("graph.json")).read_to_end() {
-    Ok(content_vec) => {
-      match from_utf8(content_vec.as_slice()) {
-        Ok(data) => return json::decode(data).unwrap(),
-        Err(err) => panic!("Could not convert byte data into utf8 string: {}", err),
-      }
-    }
+fn load_graph() -> Vec<RouteNode> {
+  json::decode(read_content("graph.json").as_slice()).unwrap()
+}
+
+fn load_journeys() -> Vec<Journey> {
+  json::decode(read_content("journeys.json").as_slice()).unwrap()
+}
+
+fn read_content(file: &str) -> String {
+  match File::open(&Path::new(file)).read_to_end() {
+    Ok(byte_vec) => from_utf8(byte_vec.as_slice()).unwrap().to_string(),
     Err(err) => panic!("IO error: {}", err),
   }
 }
