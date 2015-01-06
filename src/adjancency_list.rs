@@ -5,6 +5,10 @@ use edge::Edge;
 pub fn construct(routes: Vec<RouteNode>) -> Vec<Vec<Edge>> {
 
   // there probably is a smarter way of doing this
+  // basically we need to ensure that the adjanency list has a
+  // size of largest node + 1 so that we do not get out of bounds errors when
+  // using the list to check node's neighbours.
+
   let mut largest_node:uint = 0;
 
   for node in routes.iter() {
@@ -17,6 +21,8 @@ pub fn construct(routes: Vec<RouteNode>) -> Vec<Vec<Edge>> {
     }
   }
 
+  // initialize the list with empty vectors. largest node + 1 is so that indexing
+  // the vector with [largest_node] is allowed.
   let mut list:Vec<Vec<Edge>> = range(0, largest_node + 1).map(|_| vec![]).collect();
 
   for node in routes.iter() {
