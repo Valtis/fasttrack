@@ -29,9 +29,11 @@ struct Dijkstra<'a> {
 
 impl<'a> Dijkstra<'a> {
 
+  // initializes the state for path finding.
   fn new(_from: uint, _to: uint, _adj_list: &'a Vec<Vec<Edge>>) -> Dijkstra {
     let mut _distances:Vec<uint> = range(0, _adj_list.len()).map(|_| uint::MAX).collect();
     let _came_from:Vec<uint> = range(0, _adj_list.len()).map(|_| uint::MAX).collect();
+
     _distances[_from] = 0;
 
     let mut _queue = BinaryHeap::new();
@@ -51,6 +53,8 @@ impl<'a> Dijkstra<'a> {
             break;
           }
 
+          // handle unvisited neighbours, and if path through them is shorted,
+          // update the value and push to queue
           self.handle_neighbours(&current_node);
 
         },
@@ -62,7 +66,11 @@ impl<'a> Dijkstra<'a> {
   }
 
   fn handle_neighbours(&mut self, current_node: &Edge) {
-    // node has already been visited, skip
+
+    // old values are not removed from queue when updating with shorted distance
+    // (as far as I can tell, impossible to do with rust binary heap implementation;
+    // likely would need custom implementation) so we need to check if the
+    // node actually has already been handled, and skip it if so
     if self.visited_nodes.contains(&current_node.node) {
       return;
     }
