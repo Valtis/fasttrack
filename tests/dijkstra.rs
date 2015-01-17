@@ -39,13 +39,13 @@ fn if_no_path_exists_none_is_returned() {
 #[test]
 fn path_is_computed_correctly_to_neighboring_node() {
   let path = calculate_path(2, 3, &create_adjancency_list()).unwrap();
-  assert_eq!(vec![2u, 3], path);
+  assert_eq!(vec![2, 3], path);
 }
 
 #[test]
 fn path_is_computed_correctly_to_self() {
   let path = calculate_path(2, 2, &create_adjancency_list()).unwrap();
-  assert_eq!(vec![2u], path);
+  assert_eq!(vec![2], path);
 }
 
 
@@ -83,7 +83,7 @@ fn path_from_10_to_6_is_correct() {
 /*  Graph
 
        10            30      -> 20      -> 5
-  0 -------- 1 --------- 10----------9------ 11
+  0 -------- 1 --------- 10---------9-------- 11
   |                          <-4    |
   |4                                | 7
   |    6          3            8    |

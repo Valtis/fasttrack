@@ -1,14 +1,14 @@
 use std::collections::HashSet;
 use std::collections::BinaryHeap;
 use std::cmp::Ordering;
-use std::uint;
+use std::usize;
 
 
 use edge::Edge;
 
 
 // helper function, so that we don't need to create struct at call site needlessly.
-pub fn calculate_path(from: uint, to: uint, adj_list: &Vec<Vec<Edge>>) -> Option<Vec<uint>> {
+pub fn calculate_path(from: usize, to: usize, adj_list: &Vec<Vec<Edge>>) -> Option<Vec<usize>> {
   let mut solver = Dijkstra::new(from, to, adj_list);
   solver.calculate_path()
 }
@@ -17,11 +17,11 @@ pub fn calculate_path(from: uint, to: uint, adj_list: &Vec<Vec<Edge>>) -> Option
 
 // Dijkstra's algorithm
 struct Dijkstra<'a> {
-  from: uint,
-  to: uint,
-  distances:Vec<uint>,
-  came_from:Vec<uint>,
-  visited_nodes:HashSet<uint>,
+  from: usize,
+  to: usize,
+  distances:Vec<usize>,
+  came_from:Vec<usize>,
+  visited_nodes:HashSet<usize>,
   queue: BinaryHeap<Edge>,
   adj_list: &'a Vec<Vec<Edge>>,
 
@@ -30,9 +30,9 @@ struct Dijkstra<'a> {
 impl<'a> Dijkstra<'a> {
 
   // initializes the state for path finding.
-  fn new(_from: uint, _to: uint, _adj_list: &'a Vec<Vec<Edge>>) -> Dijkstra {
-    let mut _distances:Vec<uint> = range(0, _adj_list.len()).map(|_| uint::MAX).collect();
-    let _came_from:Vec<uint> = range(0, _adj_list.len()).map(|_| uint::MAX).collect();
+  fn new(_from: usize, _to: usize, _adj_list: &'a Vec<Vec<Edge>>) -> Dijkstra {
+    let mut _distances:Vec<usize> = range(0, _adj_list.len()).map(|_| usize::MAX).collect();
+    let _came_from:Vec<usize> = range(0, _adj_list.len()).map(|_| usize::MAX).collect();
 
     _distances[_from] = 0;
 
@@ -43,7 +43,7 @@ impl<'a> Dijkstra<'a> {
       visited_nodes: HashSet::new(), queue: _queue, adj_list: _adj_list }
   }
 
-  fn calculate_path(&mut self) -> Option<Vec<uint>> {
+  fn calculate_path(&mut self) -> Option<Vec<usize>> {
 
     loop {
       match self.queue.pop() {
@@ -97,10 +97,10 @@ impl<'a> Dijkstra<'a> {
     }
   }
 
-  fn construct_path(&self) -> Vec<uint> {
+  fn construct_path(&self) -> Vec<usize> {
     let mut path = vec![];
 
-    let mut current_node:uint = self.to;
+    let mut current_node:usize = self.to;
 
     loop {
       path.push(current_node);

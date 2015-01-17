@@ -9,7 +9,7 @@ pub fn construct(routes: Vec<RouteNode>) -> Vec<Vec<Edge>> {
   // size of largest node + 1 so that we do not get out of bounds errors when
   // using the list to check node's neighbours.
 
-  let mut largest_node:uint = 0;
+  let mut largest_node:usize = 0;
 
   for node in routes.iter() {
     if node.from > largest_node {

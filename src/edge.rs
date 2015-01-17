@@ -1,11 +1,11 @@
 #[derive(Eq, PartialEq, Show, Copy)]
 pub struct Edge {
-  pub node: uint,
-  pub distance: uint
+  pub node: usize,
+  pub distance: usize
 }
 
 impl Edge {
-  pub fn new(n: uint, d: uint) -> Edge {
+  pub fn new(n: usize, d: usize) -> Edge {
     Edge {node: n, distance: d }
   }
 }

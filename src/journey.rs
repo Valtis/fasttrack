@@ -1,13 +1,13 @@
 
 #[derive(Show, Encodable, Decodable)]
 pub struct Journey {
-  pub from: uint,
-  pub to: uint,
-  pub route: Option<Vec<uint>>,
+  pub from: usize,
+  pub to: usize,
+  pub route: Option<Vec<usize>>,
 }
 
 impl Journey {
-  pub fn new(f: uint, t: uint, r: Option<Vec<uint>>) -> Journey {
+  pub fn new(f: usize, t: usize, r: Option<Vec<usize>>) -> Journey {
     Journey{from: f, to: t, route: r }
   }
 }
